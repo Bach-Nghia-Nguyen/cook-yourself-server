@@ -8,7 +8,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const MONGODB_URI = process.env.MONGODB_URI;
 const passport = require("passport");
-require("./middlewares/passport");
+// require("./middlewares/passport");
 // mongoose.plugin(require("./models/plugins/modifiedAt"));
 
 const multer = require("multer");
@@ -17,7 +17,7 @@ const upload = multer();
 // const utilsHelper = require("./helpers/utils.helper");
 const indexRouter = require("./routes/index");
 const { AppError, sendResponse } = require("./helpers/utils.helper");
-const emailHelper = require("./helpers/email.helper");
+// const emailHelper = require("./helpers/email.helper");
 
 const app = express();
 
@@ -42,7 +42,7 @@ mongoose
   .then(() => {
     console.log(`Mongoose connected to ${MONGODB_URI}`);
     // require("./testing/testSchema");
-    emailHelper.createTemplateIfNotExists();
+    // emailHelper.createTemplateIfNotExists();
   })
   .catch((err) => {
     console.log(err);

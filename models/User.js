@@ -12,13 +12,13 @@ const userSchema = Schema(
     emailVerificationCode: { type: String, select: false },
     emailVerified: { type: Boolean, require: true, default: false },
     isDeleted: { type: Boolean, default: false, select: false },
-    // role: { type: String, enum: ["customer", "admin"], default: "customer"},
+    // role: { type: String, required: true, enum: ["customer", "admin"], default: "customer"},
   },
   { timestamps: true }
 );
 
 // role: "customer" || "admin"
-// role: { type: String, required: true, default: "customer"}
+// role: { type: String, enum: ["customer", "admin"], default: "customer"}
 
 userSchema.plugin(require("./plugins/isDeletedFalse"));
 

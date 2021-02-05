@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const commentSchema = Schema(
   {
-    content: { tyep: String, required: true },
+    content: { type: String, required: true },
     user: { type: Schema.ObjectId, required: true, ref: "User" },
     recipe: { type: Schema.ObjectId, required: true, ref: "Recipe" },
     reactions: { like: { type: Number, default: 0 } },
