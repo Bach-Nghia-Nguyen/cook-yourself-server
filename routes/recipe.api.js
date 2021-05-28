@@ -4,8 +4,8 @@ const recipeController = require("../controllers/recipe.controller");
 const validators = require("../middlewares/validators");
 const authMiddleware = require("../middlewares/authentication");
 const fileUpload = require("../helpers/upload.helper")("public/images");
-const uploader = fileUpload.uploader;
-const photoHelper = require("../helpers/photo.helper");
+//const uploader = fileUpload.uploader;
+//const photoHelper = require("../helpers/photo.helper");
 
 const { body, param } = require("express-validator");
 
@@ -37,8 +37,8 @@ router.get(
 router.post(
   "/",
   authMiddleware.loginRequired,
-  uploader.array("images", 2),
-  photoHelper.resize,
+  //uploader.array("images", 2),
+  //photoHelper.resize,
   validators.validate([
     body("name", "Missing name").exists().notEmpty(),
     body("description", "Missing description").exists().notEmpty(),

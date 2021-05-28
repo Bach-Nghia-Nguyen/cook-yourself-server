@@ -3,6 +3,7 @@ const {
   catchAsync,
   sendResponse,
 } = require("../helpers/utils.helper");
+const Comment = require("../models/Comment");
 const Recipe = require("../models/Recipe");
 // const User = require("../models/User");
 
@@ -27,7 +28,14 @@ recipeController.getRecipes = catchAsync(async (req, res, next) => {
     .limit(limit)
     .populate("author");
 
-  return sendResponse(res, 200, true, { recipes, totalPages }, null, "");
+  return sendResponse(
+    res,
+    200,
+    true,
+    { recipes, totalPages },
+    null,
+    "Get Recipes success"
+  );
 });
 
 recipeController.getSingleRecipe = catchAsync(async (req, res, next) => {
@@ -37,16 +45,27 @@ recipeController.getSingleRecipe = catchAsync(async (req, res, next) => {
       new AppError(404, "Recipe not found", "Get Single Recipe error")
     );
   recipe = recipe.toJSON();
+  recipe.comments = await Comment.find({ recipe: recipe._id }).populate("user");
 
   return sendResponse(res, 200, true, recipe, null, null);
 });
 
 recipeController.createNewRecipe = catchAsync(async (req, res, next) => {
   const author = req.userId;
-  const { name, description } = req.body;
+  const { name, description, time, portion, ingredients, directions } =
+    req.body;
   let { images } = req.body;
 
-  const recipe = await Recipe.create({ name, description, author, images });
+  const recipe = await Recipe.create({
+    name,
+    description,
+    author,
+    time,
+    portion,
+    ingredients,
+    directions,
+    images,
+  });
 
   return sendResponse(
     res,
@@ -61,11 +80,12 @@ recipeController.createNewRecipe = catchAsync(async (req, res, next) => {
 recipeController.updateSingleRecipe = catchAsync(async (req, res, next) => {
   const author = req.userId;
   const recipeId = req.params.id;
-  const { name, description } = req.body;
+  const { name, description, images, time, portion, ingredients, directions } =
+    req.body;
 
   const recipe = await Recipe.findOneAndUpdate(
     { _id: recipeId, author: author },
-    { name, description },
+    { name, description, images, time, portion, ingredients, directions },
     { new: true }
   );
 
@@ -93,7 +113,7 @@ recipeController.deleteSingleRecipe = catchAsync(async (req, res, next) => {
   const recipeId = req.params.id;
 
   const recipe = await Recipe.findOneAndUpdate(
-    { id: recipeId, author: author },
+    { _id: recipeId, author: author },
     { isDeleted: true },
     { new: true }
   );
@@ -107,7 +127,14 @@ recipeController.deleteSingleRecipe = catchAsync(async (req, res, next) => {
       )
     );
 
-  return sendResponse(res, 200, true, null, null, "Delete Recipe successfully");
+  return sendResponse(
+    res,
+    200,
+    true,
+    recipe,
+    null,
+    "Delete Recipe successfully"
+  );
 });
 
 module.exports = recipeController;

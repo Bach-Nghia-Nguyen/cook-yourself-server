@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// ref (reference): Product
 const itemSchema = Schema(
   {
-    recipeId: { type: mongoose.Schema.Types.ObjectId, ref: "Recipe" },
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
     quantity: {
       type: Number,
       required: true,

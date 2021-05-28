@@ -44,9 +44,7 @@ commentController.getCommentsOfRecipe = catchAsync(async (req, res, next) => {
 
   const recipe = Recipe.findById(recipeId);
   if (!recipe)
-    return next(
-      new AppError(404, "Recipe not found", "Create New Comment Error")
-    );
+    return next(new AppError(404, "Recipe not found", "Get Comments Error"));
 
   const totalComments = await Comment.countDocuments({ recipe: recipeId });
   const totalPages = Math.ceil(totalComments / limit);
@@ -57,7 +55,14 @@ commentController.getCommentsOfRecipe = catchAsync(async (req, res, next) => {
     .skip(offset)
     .limit(limit);
 
-  return sendResponse(res, 200, true, { comments, totalPages }, null, "");
+  return sendResponse(
+    res,
+    200,
+    true,
+    { comments, totalPages },
+    null,
+    "Get Comments success"
+  );
 });
 
 commentController.updateSingleComment = catchAsync(async (req, res, next) => {
@@ -80,7 +85,7 @@ commentController.updateSingleComment = catchAsync(async (req, res, next) => {
       )
     );
 
-  return sendResponse(res, 200, true, comment, null, "Update successfully");
+  return sendResponse(res, 200, true, comment, null, "Update Comment success");
 });
 
 commentController.deleteSingleComment = catchAsync(async (req, res, next) => {
@@ -101,7 +106,7 @@ commentController.deleteSingleComment = catchAsync(async (req, res, next) => {
       )
     );
 
-  return sendResponse(res, 200, true, null, null, "Delete successfully");
+  return sendResponse(res, 200, true, comment, null, "Delete Comment success");
 });
 
 module.exports = commentController;

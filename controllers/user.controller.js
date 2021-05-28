@@ -6,7 +6,7 @@ const {
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 // const emailHelper = require("../helpers/email.helper");
-const utilsHelper = require("../helpers/utils.helper");
+// const utilsHelper = require("../helpers/utils.helper");
 
 const userController = {};
 
@@ -18,15 +18,15 @@ userController.register = catchAsync(async (req, res, next) => {
 
   const salt = await bcrypt.genSalt(10);
   password = await bcrypt.hash(password, salt);
-  const emailVerificationCode = utilsHelper.generateRandomHexString(20);
+  // const emailVerificationCode = utilsHelper.generateRandomHexString(20);
 
   user = await User.create({
     name,
     email,
     password,
     avatarUrl,
-    emailVerificationCode,
-    emailVerified: false,
+    //emailVerificationCode,
+    //emailVerified: false,
   });
   // const accessToken = await user.generateToken();
 
@@ -47,7 +47,6 @@ userController.register = catchAsync(async (req, res, next) => {
     200,
     true,
     { user },
-    // { user, accessToken },
     null,
     "Create user successfully"
   );
@@ -98,33 +97,33 @@ userController.updateProfile = catchAsync(async (req, res, next) => {
 
   await user.save();
 
-  return sendResponse(
-    res,
-    200,
-    true,
-    user,
-    null,
-    "Update Profile successfully"
-  );
+  return sendResponse(res, 200, true, user, null, "Update Profile success");
 });
 
 userController.getUsers = catchAsync(async (req, res, next) => {
   let { page, limit, sortBy, ...filter } = { ...req.query };
 
-  const currentUserId = req.userId;
+  // const currentUserId = req.userId;
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 10;
 
-  const totalNumUsers = await User.find({ ...filter }).countDocuments();
-  const totalPages = Math.ceil(totalNumUsers / limit);
+  const totalUsers = await User.countDocuments({ ...filter, isDeleted: false });
+  const totalPages = Math.ceil(totalUsers / limit);
   const offset = limit * (page - 1);
 
-  const users = await User.find({ ...filter })
+  const users = await User.find(filter)
     .sort({ ...sortBy, createdAt: -1 })
     .skip(offset)
     .limit(limit);
 
-  return sendResponse(res, 200, true, { users, totalPages }, null, "");
+  return sendResponse(
+    res,
+    200,
+    true,
+    { users, totalPages },
+    null,
+    "Get users success"
+  );
 });
 
 userController.getCurrentUser = catchAsync(async (req, res, next) => {
@@ -132,7 +131,8 @@ userController.getCurrentUser = catchAsync(async (req, res, next) => {
   const user = await User.findById(userId);
   if (!user)
     return next(new AppError(400, "User not found", "Get Current User Error"));
-  return sendResponse(res, 200, true, user, null, "Get current user sucessful");
+
+  return sendResponse(res, 200, true, user, null, "Get current user success");
 });
 
 module.exports = userController;

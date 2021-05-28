@@ -22,7 +22,7 @@ router.post(
     body("targetId", "Invalid targetId")
       .exists()
       .custom(validators.checkObjectId),
-    body("emoji", "Invalid emoji").exists().isIn(["like"]),
+    body("emoji", "Invalid emoji").exists().isIn(["love"]),
   ]),
   reactionController.saveReaction
 );

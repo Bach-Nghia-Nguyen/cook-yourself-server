@@ -8,7 +8,7 @@ const commentSchema = Schema(
     content: { type: String, required: true },
     user: { type: Schema.ObjectId, required: true, ref: "User" },
     recipe: { type: Schema.ObjectId, required: true, ref: "Recipe" },
-    reactions: { like: { type: Number, default: 0 } },
+    reactions: { love: { type: Number, default: 0 } },
   },
   { timestamps: true }
 );
@@ -33,7 +33,7 @@ commentSchema.pre(/^findOneAnd/, async function (next) {
   next();
 });
 
-commentSchema.post(/^/, async function (next) {
+commentSchema.post(/^findOneAnd/, async function (next) {
   await this.doc.constructor.calculateComments(this.doc.recipe);
 });
 

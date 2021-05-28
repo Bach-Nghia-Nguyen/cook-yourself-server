@@ -6,8 +6,25 @@ const recipeSchema = Schema(
     name: { type: String, required: true },
     description: { type: String, required: true },
     images: [String],
+
+    time: { type: Number, required: false },
+    portion: { type: Number, required: false, default: 1 },
+    ingredients: [
+      {
+        name: { type: String },
+        amount: { type: Number },
+        unit: { type: String },
+      },
+    ],
+
+    directions: [
+      {
+        step: { type: String },
+      },
+    ],
+
     author: { type: Schema.Types.ObjectId, required: true, ref: "User" },
-    reactions: { like: { type: Number, default: 0 } },
+    reactions: { love: { type: Number, default: 0 } },
     commentCount: { type: Number, default: 0 },
     isDeleted: { type: Boolean, default: false, select: false },
   },

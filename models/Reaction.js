@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Only "Like" emoji
+// Only "Love" emoji
 const reactionSchema = Schema(
   {
     user: { type: Schema.ObjectId, required: true, ref: "User" },
     targetType: { type: String, required: true, enum: ["Recipe", "Comment"] },
     targetId: { type: Schema.ObjectId, required: true, refPath: "targetType" },
-    emoji: { type: String, required: true, enum: ["like"] },
+    emoji: { type: String, required: true, enum: ["love"] },
   },
   { timestamps: true }
 );
@@ -21,13 +21,13 @@ reactionSchema.statics.calculateReaction = async function (
     {
       $group: {
         _id: "$targetId",
-        like: { $sum: { $cond: [{ $eq: ["$emoji", "like"] }, 1, 0] } },
+        love: { $sum: { $cond: [{ $eq: ["$emoji", "love"] }, 1, 0] } },
       },
     },
   ]);
 
-  await mongoose.model(targetType).findByIdAndDelete(targetId, {
-    reactions: { like: (stats[0] && stats[0].like) || 0 },
+  await mongoose.model(targetType).findByIdAndUpdate(targetId, {
+    reactions: { love: (stats[0] && stats[0].love) || 0 },
   });
 };
 
