@@ -7,12 +7,39 @@ const recipeSchema = Schema(
     description: { type: String, required: true },
     images: [String],
 
-    time: { type: Number, required: false },
-    portion: { type: Number, required: false, default: 1 },
+    dish_type: {
+      type: String,
+      required: false,
+      enum: [
+        "main dish",
+        "side dish",
+        "appetizer",
+        "soup",
+        "salad",
+        "dessert",
+        "drink",
+        "other",
+      ],
+    },
+
+    preparation_time: {
+      value: { type: Number, default: 0, min: [0, "Time can't be negative"] },
+      unit: { type: String, enum: ["second", "minute", "hour"] },
+    },
+    cooking_time: {
+      value: { type: Number, default: 0, min: [0, "Time can't be negative"] },
+      unit: { type: String, enum: ["second", "minute", "hour"] },
+    },
+    portion: {
+      type: Number,
+      required: false,
+      default: 1,
+      min: [0, "Number of people can't be negative"],
+    },
     ingredients: [
       {
         name: { type: String },
-        amount: { type: Number },
+        amount: { type: Number, min: [0, "Amount can't be negative"] },
         unit: { type: String },
       },
     ],

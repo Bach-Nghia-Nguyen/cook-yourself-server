@@ -9,6 +9,50 @@ const Recipe = require("../models/Recipe");
 
 const recipeController = {};
 
+recipeController.createNewRecipe = catchAsync(async (req, res, next) => {
+  const author = req.userId;
+  const {
+    name,
+    description,
+    dish_type,
+    preparation_time,
+    cooking_time,
+    portion,
+    //ingredients,
+    //directions,
+  } = req.body;
+  let { images } = req.body;
+
+  // const preparation_time = {
+  //   value: "",
+  //   unit: "",
+  // };
+  // preparation_time.value = preparation_time_value;
+  // preparation_time.unit = preparation_time_unit;
+
+  const recipe = await Recipe.create({
+    name,
+    description,
+    author,
+    dish_type,
+    preparation_time,
+    cooking_time,
+    portion,
+    //ingredients,
+    //directions,
+    images,
+  });
+
+  return sendResponse(
+    res,
+    200,
+    true,
+    recipe,
+    null,
+    "Create New Recipe successfully"
+  );
+});
+
 recipeController.getRecipes = catchAsync(async (req, res, next) => {
   let { page, limit, sortBy, ...filter } = { ...req.query };
   page = parseInt(page) || 1;
@@ -50,42 +94,35 @@ recipeController.getSingleRecipe = catchAsync(async (req, res, next) => {
   return sendResponse(res, 200, true, recipe, null, null);
 });
 
-recipeController.createNewRecipe = catchAsync(async (req, res, next) => {
-  const author = req.userId;
-  const { name, description, time, portion, ingredients, directions } =
-    req.body;
-  let { images } = req.body;
-
-  const recipe = await Recipe.create({
-    name,
-    description,
-    author,
-    time,
-    portion,
-    ingredients,
-    directions,
-    images,
-  });
-
-  return sendResponse(
-    res,
-    200,
-    true,
-    recipe,
-    null,
-    "Create New Recipe successfully"
-  );
-});
-
 recipeController.updateSingleRecipe = catchAsync(async (req, res, next) => {
   const author = req.userId;
   const recipeId = req.params.id;
-  const { name, description, images, time, portion, ingredients, directions } =
-    req.body;
+  const {
+    name,
+    description,
+    images,
+    dish_type,
+    preparation_time,
+    cooking_time,
+    portion,
+    ingredients,
+    directions,
+  } = req.body;
 
   const recipe = await Recipe.findOneAndUpdate(
     { _id: recipeId, author: author },
-    { name, description, images, time, portion, ingredients, directions },
+    {
+      name,
+      description,
+      images,
+      time,
+      dish_type,
+      preparation_time,
+      cooking_time,
+      portion,
+      ingredients,
+      directions,
+    },
     { new: true }
   );
 

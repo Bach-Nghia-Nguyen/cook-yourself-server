@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const { body, param } = require("express-validator");
 const recipeController = require("../controllers/recipe.controller");
 const validators = require("../middlewares/validators");
 const authMiddleware = require("../middlewares/authentication");
-const fileUpload = require("../helpers/upload.helper")("public/images");
+//const fileUpload = require("../helpers/upload.helper")("public/images");
 //const uploader = fileUpload.uploader;
 //const photoHelper = require("../helpers/photo.helper");
-
-const { body, param } = require("express-validator");
 
 /**
  * @route GET api/recipes?page=1&limit=10

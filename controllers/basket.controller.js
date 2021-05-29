@@ -12,6 +12,7 @@ basketController.getBasket = catchAsync(async (req, res, next) => {
 });
 
 basketController.createBasket = catchAsync(async (req, res, next) => {
+  const produce = await Basket.findByById(productId).populate("productId");
   return sendResponse();
 });
 

@@ -7,16 +7,15 @@ const logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const MONGODB_URI = process.env.MONGODB_URI;
-const passport = require("passport");
+//const passport = require("passport");
 // require("./middlewares/passport");
 // mongoose.plugin(require("./models/plugins/modifiedAt"));
 
-const multer = require("multer");
-const upload = multer();
+//const multer = require("multer");
+//const upload = multer();
 
-// const utilsHelper = require("./helpers/utils.helper");
-const indexRouter = require("./routes/index");
 const { AppError, sendResponse } = require("./helpers/utils.helper");
+const indexRouter = require("./routes/index");
 // const emailHelper = require("./helpers/email.helper");
 
 const app = express();
@@ -24,11 +23,11 @@ const app = express();
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(upload.array());
+//app.use(upload.array());
 app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(passport.initialize());
+//app.use(passport.initialize());
 
 /* DB Connections */
 mongoose

@@ -21,6 +21,11 @@ router.use("/comments", commentApi);
 const reactionApi = require("./reaction.api");
 router.use("/reactions", reactionApi);
 
+// productAPI
+// const productApi = require("./product.api");
+
+// router.use("/products", productAPI);
+
 // basketAPI
 // const basketApi = require("./basket.api");
 // router.use("/basket", basketApi);

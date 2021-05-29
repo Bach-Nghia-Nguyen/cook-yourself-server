@@ -82,11 +82,19 @@ userController.verifyEmail = catchAsync(async (req, res, next) => {
 
 userController.updateProfile = catchAsync(async (req, res, next) => {
   const userId = req.userId;
-  const allows = ["name", "password", "avatarUrl"];
+  const allows = ["name", "avatarUrl"];
+  let { password } = req.body;
   const user = await User.findById(userId);
 
   if (!user) {
     return next(new AppError(404, "Account not found", "Update Profile Error"));
+  }
+
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+    user["password"] = password;
+    console.log("Encrypted new password:", password);
   }
 
   allows.forEach((field) => {
