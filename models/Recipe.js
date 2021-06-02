@@ -18,6 +18,7 @@ const recipeSchema = Schema(
         "salad",
         "dessert",
         "drink",
+        "vegan",
         "other",
       ],
     },
@@ -39,7 +40,7 @@ const recipeSchema = Schema(
     ingredients: [
       {
         name: { type: String },
-        amount: { type: Number, min: [0, "Amount can't be negative"] },
+        amount: { type: String }, //{ type: Number, min: [0, "Amount can't be negative"] },
         unit: { type: String },
       },
     ],

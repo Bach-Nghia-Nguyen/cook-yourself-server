@@ -80,4 +80,36 @@ authController.loginWithFaceBookOrGoogle = catchAsync(
   }
 );
 
+authController.validateCurrentPassword = catchAsync(async (req, res, next) => {
+  const { password } = req.body;
+  console.log("req.body.password", password);
+  const userId = req.userId;
+  const user = await User.findById(userId, "+password");
+  if (!user)
+    return next(
+      new AppError(
+        400,
+        "Invalid credentials",
+        "Validate current password error"
+      )
+    );
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch)
+    return next(
+      new AppError(400, "Wrong password", "Validate current password error")
+    );
+
+  const isPasswordRight = true;
+
+  return sendResponse(
+    res,
+    200,
+    true,
+    { user, isPasswordRight },
+    null,
+    "Right password"
+  );
+});
+
 module.exports = authController;

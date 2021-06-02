@@ -7,6 +7,8 @@ const authMiddleware = {};
 authMiddleware.loginRequired = (req, res, next) => {
   try {
     const tokenString = req.headers.authorization;
+    console.log("tokenString:", tokenString);
+
     if (!tokenString)
       return next(new AppError(401, "Login required", "Validation Error"));
     const token = tokenString.replace("Bearer ", "");
@@ -26,6 +28,21 @@ authMiddleware.loginRequired = (req, res, next) => {
     next();
   } catch (error) {
     next(error);
+  }
+};
+
+authMiddleware.adminRequired = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    const currentUser = await User.findById(userId);
+    const isAdmin = currentUser.role === "admin";
+
+    if (!isAdmin) return next(new Error("401 - You are not authorized"));
+    req.isAdmin = isAdmin;
+
+    next();
+  } catch (err) {
+    next(err);
   }
 };
 

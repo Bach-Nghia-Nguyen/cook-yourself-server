@@ -4,6 +4,7 @@ const passport = require("passport");
 const validators = require("../middlewares/validators");
 const authController = require("../controllers/auth.controller");
 const { body } = require("express-validator");
+const authMiddleware = require("../middlewares/authentication");
 
 /**
  * @route POST api/auth/login
@@ -39,6 +40,17 @@ router.post(
   "/login/google",
   passport.authenticate("google-token"),
   authController.loginWithFaceBookOrGoogle
+);
+
+/**
+ * @route POST api/auth/validate_password
+ * @description Validate Current password
+ * @access Login required
+ */
+router.post(
+  "/validate_password",
+  authMiddleware.loginRequired,
+  authController.validateCurrentPassword
 );
 
 module.exports = router;

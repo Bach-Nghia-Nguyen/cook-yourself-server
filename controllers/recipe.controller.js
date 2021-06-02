@@ -18,8 +18,8 @@ recipeController.createNewRecipe = catchAsync(async (req, res, next) => {
     preparation_time,
     cooking_time,
     portion,
-    //ingredients,
-    //directions,
+    ingredients,
+    directions,
   } = req.body;
   let { images } = req.body;
 
@@ -38,8 +38,8 @@ recipeController.createNewRecipe = catchAsync(async (req, res, next) => {
     preparation_time,
     cooking_time,
     portion,
-    //ingredients,
-    //directions,
+    ingredients,
+    directions,
     images,
   });
 
@@ -115,7 +115,6 @@ recipeController.updateSingleRecipe = catchAsync(async (req, res, next) => {
       name,
       description,
       images,
-      time,
       dish_type,
       preparation_time,
       cooking_time,

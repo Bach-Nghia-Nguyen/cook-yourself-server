@@ -12,13 +12,19 @@ const userSchema = Schema(
       type: String,
       required: false,
       default:
-        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
+        "https://res.cloudinary.com/bach-nghia/image/upload/v1622537695/vvazhrkqgmwnjv7keqhd.png",
     },
+
     password: { type: String, required: true, select: false },
     emailVerificationCode: { type: String, select: false },
     emailVerified: { type: Boolean, required: true, default: false },
     isDeleted: { type: Boolean, default: false, select: false },
-    // role: { type: String, required: true, enum: ["customer", "admin"], default: "customer"},
+    role: {
+      type: String,
+      required: true,
+      enum: ["customer", "admin"],
+      default: "customer",
+    },
   },
   { timestamps: true }
 );
@@ -65,7 +71,7 @@ userSchema.statics.findOrCreate = function (profile, callback) {
 
 userSchema.methods.generateToken = async function () {
   const accessToken = await jwt.sign({ _id: this._id }, JWT_SECRET_KEY, {
-    expiresIn: "1d",
+    expiresIn: "7d",
   });
   return accessToken;
 };

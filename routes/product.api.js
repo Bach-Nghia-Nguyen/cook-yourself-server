@@ -1,4 +1,5 @@
 const express = require("express");
+const authMiddleware = require("../middlewares/authentication");
 const router = express.Router();
 // const { body, param } = require("express-validator");
 
@@ -28,7 +29,7 @@ const router = express.Router();
  * @description Update a product
  * @access Admin, moderator only
  */
-// router.put();
+// router.put("/", authMiddleware.loginRequired, authMiddleware.adminRequired, );
 
 /**
  * @route DELETE api/products/:id
