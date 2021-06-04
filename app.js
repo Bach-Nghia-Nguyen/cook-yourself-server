@@ -7,8 +7,8 @@ const logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const MONGODB_URI = process.env.MONGODB_URI;
-//const passport = require("passport");
-// require("./middlewares/passport");
+const passport = require("passport");
+require("./middlewares/passport");
 // mongoose.plugin(require("./models/plugins/modifiedAt"));
 
 //const multer = require("multer");
@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
-//app.use(passport.initialize());
+app.use(passport.initialize());
 
 /* DB Connections */
 mongoose
